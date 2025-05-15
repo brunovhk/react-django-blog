@@ -1,54 +1,71 @@
-# React + TypeScript + Vite
+# Frontend - Blog Platform (React + TypeScript)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend of the Blog Platform, built with **React**, **TypeScript**, and **Vite**. It consumes the API provided by the Django + DRF backend and provides a complete blog interface with authentication, post creation, nested comments, and user profile management.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tech Stack
 
-## Expanding the ESLint configuration
+- ⚛️ React 18+
+- 🔐 TypeScript
+- ⚡ Vite
+- 📡 Axios (API requests)
+- 🌐 React Router DOM (routing)
+- 🎨 Tailwind CSS (styling)
+- 🧪 Jest + React Testing Library (tests)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🛠️ Project Setup
+
+```bash
+# Navigate to the frontend folder
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+The app will be available at http://localhost:5173
+
+## 📁 Folder Structure
+```bash
+frontend/
+├── public/             # Static assets
+├── src/
+│   ├── assets/         # Images, fonts, etc.
+│   ├── components/     # Reusable UI components
+│   ├── pages/          # Page views (Home, Login, Register, etc.)
+│   ├── services/       # API integration (e.g., axios config)
+│   ├── hooks/          # Custom React hooks
+│   ├── types/          # TypeScript interfaces/types
+│   ├── App.tsx         # Main app component
+│   └── main.tsx        # Entry point
+├── index.html
+└── vite.config.ts      # Vite config
+```
+## 🔒 Environment Variables
+Create a .env file in the root of frontend/ and define:
+```env
+VITE_API_BASE_URL=http://localhost:8000/api
+```
+## 🧪 Running Tests
+```bash
+npm run test
+```
+## ✅ Todo
+- ☐ Authentication flow (login, register, JWT)
+- ☐ Post CRUD
+- ☐ Nested comment system
+- ☐ Author profile with stats
+- ☐ Responsive UI
+
+## 📦 Build
+```bash
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 📄 License
+This project is licensed under the MIT License.
