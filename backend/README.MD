@@ -1,5 +1,17 @@
 ## Getting Started (Backend)
 
+# Stack
+- Django 4+
+- Django REST Framework
+- drf-yasg (Swagger/OpenAPI)
+- dotenv for environment config
+
+# Project Structure
+- `config/`: Django project settings
+- `users/`: user auth and profile (to be created)
+- `posts/`: blog post logic (to be created)
+- `comments/`: nested comments (to be created)
+
 ```bash
 # Clone the repo
 git clone https://github.com/brunovhk/react-django-blog.git
