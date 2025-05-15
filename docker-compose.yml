@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+    backend:
+        build: ./backend
+        container_name: blog_backend
+        volumes:
+            - ./backend:/app
+        ports:
+            - "8000:8000"
+        env_file:
+            - ./backend/.env
+        depends_on:
+            - db
+
+    frontend:
+        build: ./frontend
+        container_name: blog_frontend
+        volumes:
+            - ./frontend:/app
+        ports:
+            - "5173:5173"
+        environment:
+            - HOST=0.0.0.0
+
+    db:
+        image: postgres:15
+        container_name: blog_db
+        restart: always
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+        environment:
+            POSTGRES_DB: blog
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+        ports:
+            - "5432:5432"
+
+volumes:
+    postgres_data:
