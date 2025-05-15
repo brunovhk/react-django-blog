@@ -31,7 +31,13 @@ cp .env.example .env
 python3 manage.py migrate
 python3 manage.py runserver
 ```
+---
+## API Documentation
 
+This project uses [`drf-yasg`](https://github.com/axnsan12/drf-yasg) to generate interactive API documentation.
+
+- Swagger UI: [http://localhost:8000/swagger/](http://localhost:8000/swagger/)
+- Redoc: [http://localhost:8000/redoc/](http://localhost:8000/redoc/)
 ---
 
 ## Notes
