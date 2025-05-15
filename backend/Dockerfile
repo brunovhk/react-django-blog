@@ -7,15 +7,14 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 # Install dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y wget \
     build-essential \
     libpq-dev \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Dockerize
-RUN apt-get update && apt-get install -y wget && \
-    wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz && \
+RUN wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz && \
     tar -C /usr/local/bin -xzvf dockerize-linux-amd64-v0.6.1.tar.gz && \
     rm dockerize-linux-amd64-v0.6.1.tar.gz
 
