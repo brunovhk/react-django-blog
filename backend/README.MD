@@ -31,3 +31,19 @@ cp .env.example .env
 python3 manage.py migrate
 python3 manage.py runserver
 ```
+
+---
+
+## Notes
+
+- This project uses [`dockerize`](https://github.com/jwilder/dockerize) to ensure the Django server only starts after the PostgreSQL database is ready.
+- `dockerize` is installed in the backend Docker container and used in `docker-compose.yml` via:
+
+```yaml
+command: >
+  dockerize -wait tcp://db:5432 -timeout 30s -- sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+```
+
+### Reason: This helps avoid race conditions where the app tries to connect to the database before it's ready.
+
+---
