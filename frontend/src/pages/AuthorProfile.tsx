@@ -5,10 +5,12 @@ import {
   Typography,
   Card,
   CardContent,
+  CircularProgress,
   Grid,
   Box,
 } from "@mui/material";
 import api from "@/api/api";
+import { useSnackbar } from "@/components/SnackbarProvider";
 
 interface PostSummary {
   id: number;
@@ -26,12 +28,34 @@ interface AuthorStats {
 export default function AuthorProfile() {
   const { username } = useParams();
   const [data, setData] = useState<AuthorStats | null>(null);
+  const [loading, setLoading] = useState(true);
+  const { showMessage } = useSnackbar();
 
   useEffect(() => {
-    api.get(`users/author/${username}/`).then((res) => setData(res.data));
+    api
+      .get(`users/author/${username}/`)
+      .then((res) => setData(res.data))
+      .catch(() => showMessage("Failed to load author profile", "error"))
+      .finally(() => setLoading(false));
   }, [username]);
 
-  if (!data) return <Typography>Loading...</Typography>;
+  if (loading || !data)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: 6,
+          gap: 2,
+        }}
+      >
+        <Typography variant="body1" color="text.secondary">
+          Loading Author Profile...
+        </Typography>
+        <CircularProgress />
+      </Box>
+    );
 
   return (
     <Container sx={{ mt: 4 }}>

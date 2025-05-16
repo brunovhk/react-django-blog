@@ -6,6 +6,7 @@ import {
   Box,
   Card,
   Chip,
+  CircularProgress,
   CardContent,
   TextField,
   Button,
@@ -39,6 +40,7 @@ export default function PostView() {
   const { id } = useParams();
   const { isAuthenticated } = useAuth();
 
+  const [loading, setLoading] = useState(true);
   const [post, setPost] = useState<Post | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
@@ -53,10 +55,22 @@ export default function PostView() {
   };
 
   useEffect(() => {
-    api.get(`posts/${id}/`).then((res) => setPost(res.data));
-    api
-      .get(`comments/?post=${id}`)
-      .then((res) => setComments(res.data.results));
+    const fetchPostAndComments = async () => {
+      try {
+        const [postRes, commentRes] = await Promise.all([
+          api.get(`posts/${id}/`),
+          api.get(`comments/?post=${id}`),
+        ]);
+        setPost(postRes.data);
+        setComments(commentRes.data);
+      } catch (error) {
+        showMessage("Failed to load post", "error");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPostAndComments();
   }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -118,7 +132,23 @@ export default function PostView() {
     </Box>
   );
 
-  if (!post) return <Typography>Loading...</Typography>;
+  if (loading || !post)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: 6,
+          gap: 2,
+        }}
+      >
+        <Typography variant="body1" color="text.secondary">
+          Loading post...
+        </Typography>
+        <CircularProgress />
+      </Box>
+    );
 
   return (
     <Container sx={{ mt: 4 }}>
