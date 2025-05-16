@@ -152,3 +152,15 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+# Swagger settings
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT Authorization header. Example: "Bearer <your_token>"'
+        }
+    },
+    'USE_SESSION_AUTH': False, # Disable Basic Authentication option
+}

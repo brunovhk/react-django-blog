@@ -1,12 +1,14 @@
 ## Getting Started (Backend)
 
 # Stack
+
 - Django 4+
 - Django REST Framework
 - drf-yasg (Swagger/OpenAPI)
 - dotenv for environment config
 
 # Project Structure
+
 - `config/`: Django project settings
 - `users/`: user auth and profile (to be created)
 - `posts/`: blog post logic (to be created)
@@ -31,13 +33,23 @@ cp .env.example .env
 python3 manage.py migrate
 python3 manage.py runserver
 ```
+
 ---
+
 ## API Documentation
 
 This project uses [`drf-yasg`](https://github.com/axnsan12/drf-yasg) to generate interactive API documentation.
 
 - Swagger UI: [http://localhost:8000/swagger/](http://localhost:8000/swagger/)
 - Redoc: [http://localhost:8000/redoc/](http://localhost:8000/redoc/)
+
+## 🔐 How to Authenticate in Swagger
+
+1. Go to `POST /api/users/token/` and enter your credentials.
+2. Copy the `access` token returned.
+3. Click on the 🔐 "Authorize" button at the top right.
+4. Paste the token like this: `Bearer your_token_here`
+5. Now you can access all protected routes.
 ---
 
 ## Notes
@@ -56,4 +68,5 @@ In `docker-compose.yml`, the command for the backend is defined as:
 command: >
   dockerize -wait tcp://db:5432 -timeout 30s -- sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
 ```
+
 ---
