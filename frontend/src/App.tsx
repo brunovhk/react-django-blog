@@ -7,6 +7,7 @@ import Register from "@/pages/Register";
 import Home from "@/pages/Home";
 import Dashboard from "@/pages/Dashboard";
 import PostView from "@/pages/PostView";
+import AuthorProfile from "@/pages/AuthorProfile";
 // MUI
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "@/theme";
@@ -23,6 +24,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/posts/:id" element={<PostView />} />
+              <Route path="/authors/:username" element={<AuthorProfile />} />
               <Route
                 path="/dashboard"
                 element={
