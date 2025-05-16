@@ -100,9 +100,14 @@ export default function PostView() {
         </Link>{" "}
         on {new Date(post.created_at).toLocaleDateString()}
       </Typography>
-      <Typography variant="body1" sx={{ whiteSpace: "pre-line", mb: 4 }}>
-        {post.content}
-      </Typography>
+      <Box sx={{ mb: 4 }}>
+        <Typography
+          variant="body1"
+          component="div"
+          sx={{ whiteSpace: "pre-line" }}
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
+      </Box>
 
       <Typography variant="h6" gutterBottom>
         Comments
