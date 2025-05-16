@@ -7,6 +7,7 @@ import {
   Box,
   Card,
   CardContent,
+  Autocomplete,
 } from "@mui/material";
 import ReactQuill from "react-quill";
 import api from "@/api/api";
@@ -16,7 +17,7 @@ export default function Dashboard() {
   const [form, setForm] = useState({
     title: "",
     content: "",
-    tags: "",
+    tag_names: [] as string[],
   });
 
   const { showMessage } = useSnackbar();
@@ -32,7 +33,7 @@ export default function Dashboard() {
     try {
       await api.post("posts/", form);
       showMessage("Post created successfully!", "success");
-      setForm({ title: "", content: "", tags: "" });
+      setForm({ title: "", content: "", tag_names: [] });
     } catch (err) {
       showMessage("Failed to create post", "error");
     }
@@ -57,21 +58,33 @@ export default function Dashboard() {
               />
               <Box sx={{ mt: 2 }}>
                 <ReactQuill
-                key={form.content.length === 0 ? "empty" : "filled"}
                   theme="snow"
                   value={form.content}
-                  onChange={(value) => setForm({ ...form, content: value })}
+                  onChange={(value) =>
+                    setForm((prev) => ({ ...prev, content: value }))
+                  }
                   style={{ height: "200px", marginBottom: "40px" }}
                 />
               </Box>
-              <TextField
-                label="Tags (comma-separated)"
-                name="tags"
-                value={form.tags}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
+              <Autocomplete
+                multiple
+                freeSolo
+                options={[]} // Tags suggestion
+                value={form.tag_names}
+                onChange={(_, newValue) => {
+                  setForm({ ...form, tag_names: newValue });
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Tags"
+                    placeholder="Press Enter to add"
+                    margin="normal"
+                    fullWidth
+                  />
+                )}
               />
+
               <Button type="submit" variant="contained" sx={{ mt: 2 }}>
                 Publish
               </Button>
