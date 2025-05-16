@@ -9,6 +9,7 @@ import {
   Button,
   Box,
   Chip,
+  CircularProgress,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import api from "@/api/api";
@@ -24,6 +25,7 @@ interface Post {
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const { showMessage } = useSnackbar();
 
@@ -31,8 +33,28 @@ export default function Home() {
     api
       .get("posts/")
       .then((res) => setPosts(res.data.results || res.data))
-      .catch(() => showMessage("Failed to load posts", "error"));
+      .catch(() => showMessage("Failed to load posts", "error"))
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading || !posts) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: 6,
+          gap: 2,
+        }}
+      >
+        <Typography variant="body1" color="text.secondary">
+          Loading posts...
+        </Typography>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Container sx={{ mt: 4 }}>
