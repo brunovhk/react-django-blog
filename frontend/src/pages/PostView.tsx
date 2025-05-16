@@ -11,6 +11,7 @@ import {
   Avatar,
 } from "@mui/material";
 import api from "@/api/api";
+import { useSnackbar } from "@/components/SnackbarProvider";
 import { useAuth } from "@/auth/AuthContext";
 
 interface Post {
@@ -31,6 +32,7 @@ interface Comment {
 }
 
 export default function PostView() {
+  const { showMessage } = useSnackbar();
   const { id } = useParams();
   const { isAuthenticated } = useAuth();
 
@@ -56,7 +58,11 @@ export default function PostView() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newComment.trim()) return;
+
+    if (!newComment.trim()) {
+      showMessage("Please enter a valid comment before submitting.", "warning");
+      return;
+    }
 
     try {
       await api.post("comments/", {
@@ -64,12 +70,19 @@ export default function PostView() {
         content: newComment,
         parent: replyParentId,
       });
+
       setNewComment("");
       setReplyParentId(null);
+
       const res = await api.get(`comments/?post=${id}`);
       setComments(res.data.results);
+
+      showMessage(
+        "Comment submitted successfully! Awaiting moderation.",
+        "success"
+      );
     } catch {
-      alert("Failed to post comment");
+      showMessage("Failed to submit comment. Try again.", "error");
     }
   };
 

@@ -57,6 +57,7 @@ export default function Dashboard() {
               />
               <Box sx={{ mt: 2 }}>
                 <ReactQuill
+                key={form.content.length === 0 ? "empty" : "filled"}
                   theme="snow"
                   value={form.content}
                   onChange={(value) => setForm({ ...form, content: value })}
