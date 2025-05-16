@@ -1,7 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import generics
+from rest_framework import status
 from django.contrib.auth.models import User
 from posts.models import Post
 from comments.models import Comment
@@ -33,4 +34,20 @@ class AuthorStatsView(APIView):
                     for p in user.posts.order_by("-created_at")
                 ],
             }
+        )
+
+
+class UserMeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response(
+            {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+                "date_joined": user.date_joined,
+            },
+            status=status.HTTP_200_OK,
         )
