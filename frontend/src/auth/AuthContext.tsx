@@ -18,15 +18,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const token = localStorage.getItem("access_token");
 
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        setUser(decoded);
-      } catch (error) {
-        localStorage.removeItem("access_token");
-      }
+    if (!token) {
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+
+    const validateToken = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/users/me/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) throw new Error("Invalid token");
+
+        const userData = await response.json();
+        setUser(userData);
+      } catch (err) {
+        localStorage.removeItem("access_token");
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    validateToken();
   }, []);
 
   const login = (token: string) => {
