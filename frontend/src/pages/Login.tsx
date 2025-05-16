@@ -10,11 +10,13 @@ import {
 import api from "@/api/api";
 import { useAuth } from "@/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "@/components/SnackbarProvider";
 
 export default function Login() {
   const [form, setForm] = useState({ username: "", password: "" });
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { showMessage } = useSnackbar();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -25,9 +27,10 @@ export default function Login() {
     try {
       const res = await api.post("users/token/", form);
       login(res.data.access);
+      showMessage("Login successful!", "success");
       navigate("/dashboard");
     } catch {
-      alert("Invalid credentials");
+      showMessage("Invalid credentials", "error");
     }
   };
 

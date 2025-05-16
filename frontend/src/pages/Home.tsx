@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import api from "@/api/api";
+import { useSnackbar } from "@/components/SnackbarProvider";
 
 interface Post {
   id: number;
@@ -21,11 +22,13 @@ interface Post {
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
 
+  const { showMessage } = useSnackbar();
+
   useEffect(() => {
     api
       .get("posts/")
       .then((res) => setPosts(res.data.results || res.data))
-      .catch(() => alert("Failed to load posts"));
+      .catch(() => showMessage("Failed to load posts", "error"));
   }, []);
 
   return (

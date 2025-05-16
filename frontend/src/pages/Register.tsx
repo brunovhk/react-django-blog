@@ -9,11 +9,14 @@ import {
   CardContent,
 } from "@mui/material";
 import api from "@/api/api";
+import { parseAPIError } from "@/utils/parseError";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "@/components/SnackbarProvider";
 
 export default function Register() {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
   const navigate = useNavigate();
+  const { showMessage } = useSnackbar();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -24,8 +27,9 @@ export default function Register() {
     try {
       await api.post("users/register/", form);
       navigate("/login");
-    } catch {
-      alert("Registration failed");
+    } catch (e: any) {
+      const msg = parseAPIError(e.response?.data);
+      showMessage(`Registration failed: ${msg}`, "error");
     }
   };
 
