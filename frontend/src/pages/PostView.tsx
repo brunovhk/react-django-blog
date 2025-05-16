@@ -8,6 +8,7 @@ import {
   CardContent,
   TextField,
   Button,
+  Avatar,
 } from "@mui/material";
 import api from "@/api/api";
 import { useAuth } from "@/auth/AuthContext";
@@ -37,6 +38,14 @@ export default function PostView() {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
   const [replyParentId, setReplyParentId] = useState<number | null>(null);
+
+  const stringToColor = (str: string): string => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return `hsl(${hash % 360}, 60%, 60%)`;
+  };
 
   useEffect(() => {
     api.get(`posts/${id}/`).then((res) => setPost(res.data));
@@ -68,18 +77,25 @@ export default function PostView() {
     <Box sx={{ pl: level * 4, mt: 1 }}>
       {comments.map((c) => (
         <Card key={c.id} sx={{ mb: 1 }}>
-          <CardContent>
-            <Typography variant="subtitle2">
-              {c.author_username} -{" "}
-              {new Date(c.created_at).toLocaleDateString()}
-            </Typography>
-            <Typography variant="body1">{c.content}</Typography>
-            {isAuthenticated && (
-              <Button size="small" onClick={() => setReplyParentId(c.id)}>
-                Reply
-              </Button>
-            )}
-            {c.replies && renderComments(c.replies, level + 1)}
+          <CardContent
+            sx={{ display: "flex", gap: 2, alignItems: "flex-start" }}
+          >
+            <Avatar sx={{ bgcolor: stringToColor(c.author_username) }}>
+              {c.author_username.charAt(0).toUpperCase()}
+            </Avatar>
+            <Box>
+              <Typography variant="subtitle2">
+                {c.author_username} —{" "}
+                {new Date(c.created_at).toLocaleDateString()}
+              </Typography>
+              <Typography variant="body1">{c.content}</Typography>
+              {isAuthenticated && (
+                <Button size="small" onClick={() => setReplyParentId(c.id)}>
+                  Reply
+                </Button>
+              )}
+              {c.replies && renderComments(c.replies, level + 1)}
+            </Box>
           </CardContent>
         </Card>
       ))}
@@ -100,9 +116,14 @@ export default function PostView() {
         </Link>{" "}
         on {new Date(post.created_at).toLocaleDateString()}
       </Typography>
-      <Typography variant="body1" sx={{ whiteSpace: "pre-line", mb: 4 }}>
-        {post.content}
-      </Typography>
+      <Box sx={{ mb: 4 }}>
+        <Typography
+          variant="body1"
+          component="div"
+          sx={{ whiteSpace: "pre-line" }}
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
+      </Box>
 
       <Typography variant="h6" gutterBottom>
         Comments

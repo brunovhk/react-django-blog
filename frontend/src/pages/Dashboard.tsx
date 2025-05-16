@@ -8,7 +8,8 @@ import {
   Card,
   CardContent,
 } from "@mui/material";
-import api from "../api/api";
+import ReactQuill from "react-quill";
+import api from "@/api/api";
 
 export default function Dashboard() {
   const [form, setForm] = useState({
@@ -51,16 +52,14 @@ export default function Dashboard() {
                 fullWidth
                 margin="normal"
               />
-              <TextField
-                label="Content"
-                name="content"
-                value={form.content}
-                onChange={handleChange}
-                fullWidth
-                multiline
-                rows={6}
-                margin="normal"
-              />
+              <Box sx={{ mt: 2 }}>
+                <ReactQuill
+                  theme="snow"
+                  value={form.content}
+                  onChange={(value) => setForm({ ...form, content: value })}
+                  style={{ height: "200px", marginBottom: "40px" }}
+                />
+              </Box>
               <TextField
                 label="Tags (comma-separated)"
                 name="tags"
