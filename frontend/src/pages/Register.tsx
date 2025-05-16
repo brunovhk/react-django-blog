@@ -11,11 +11,13 @@ import {
 import api from "@/api/api";
 import { parseAPIError } from "@/utils/parseError";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/auth/AuthContext";
 import { useSnackbar } from "@/components/SnackbarProvider";
 
 export default function Register() {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
   const navigate = useNavigate();
+  const { login } = useAuth();
   const { showMessage } = useSnackbar();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,10 +28,19 @@ export default function Register() {
     e.preventDefault();
     try {
       await api.post("users/register/", form);
-      navigate("/login");
+
+      const res = await api.post("users/token/", {
+        username: form.username,
+        password: form.password,
+      });
+
+      login(res.data.access);
+
+      showMessage("Account created successfully. Welcome!", "success");
+      navigate("/dashboard");
     } catch (e: any) {
       const msg = parseAPIError(e.response?.data);
-      showMessage(`Registration failed: ${msg}`, "error");
+      showMessage(`Registration failed. ${msg}`, "error");
     }
   };
 
