@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import ReactQuill from "react-quill";
 import api from "@/api/api";
+import { useSnackbar } from "@/components/SnackbarProvider";
 
 export default function Dashboard() {
   const [form, setForm] = useState({
@@ -17,6 +18,8 @@ export default function Dashboard() {
     content: "",
     tags: "",
   });
+
+  const { showMessage } = useSnackbar();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -28,10 +31,10 @@ export default function Dashboard() {
     e.preventDefault();
     try {
       await api.post("posts/", form);
-      alert("Post created successfully!");
+      showMessage("Post created successfully!", "success");
       setForm({ title: "", content: "", tags: "" });
     } catch (err) {
-      alert("Failed to create post");
+      showMessage("Failed to create post", "error");
     }
   };
 
