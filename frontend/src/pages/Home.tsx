@@ -7,6 +7,8 @@ import {
   CardContent,
   CardActions,
   Button,
+  Box,
+  Chip,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import api from "@/api/api";
@@ -17,6 +19,7 @@ interface Post {
   title: string;
   author_username: string;
   created_at: string;
+  tags: string[];
 }
 
 export default function Home() {
@@ -49,6 +52,11 @@ export default function Home() {
                   By {post.author_username} on{" "}
                   {new Date(post.created_at).toLocaleDateString()}
                 </Typography>
+                <Box sx={{ mt: 1, display: "flex", gap: 1, flexWrap: "wrap" }}>
+                  {post.tags.map((tag) => (
+                    <Chip key={tag} label={tag} size="small" />
+                  ))}
+                </Box>
               </CardContent>
               <CardActions>
                 <Button size="small" component={Link} to={`/posts/${post.id}`}>

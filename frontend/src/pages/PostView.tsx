@@ -5,11 +5,13 @@ import {
   Typography,
   Box,
   Card,
+  Chip,
   CardContent,
   TextField,
   Button,
   Avatar,
 } from "@mui/material";
+import InfoIcon from "@mui/icons-material/Info";
 import api from "@/api/api";
 import { useSnackbar } from "@/components/SnackbarProvider";
 import { useAuth } from "@/auth/AuthContext";
@@ -20,6 +22,7 @@ interface Post {
   content: string;
   author_username: string;
   created_at: string;
+  tags: string[];
 }
 
 interface Comment {
@@ -119,9 +122,11 @@ export default function PostView() {
 
   return (
     <Container sx={{ mt: 4 }}>
+      {/* Post Title */}
       <Typography variant="h4" gutterBottom>
         {post.title}
       </Typography>
+      {/* Post Author */}
       <Typography variant="subtitle1" gutterBottom>
         By{" "}
         <Link to={`/authors/${post.author_username}`}>
@@ -129,6 +134,7 @@ export default function PostView() {
         </Link>{" "}
         on {new Date(post.created_at).toLocaleDateString()}
       </Typography>
+      {/* Post content */}
       <Box sx={{ mb: 4 }}>
         <Typography
           variant="body1"
@@ -137,11 +143,40 @@ export default function PostView() {
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </Box>
-
+      {/* Post Tags */}
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="subtitle2" gutterBottom>
+          Tags:
+        </Typography>
+        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+          {post.tags.map((tag) => (
+            <Chip key={tag} label={tag} size="small" />
+          ))}
+        </Box>
+      </Box>
+      {/* Post Comments */}
       <Typography variant="h6" gutterBottom>
         Comments
       </Typography>
-      {renderComments(comments)}
+      {comments.length > 0 ? (
+        renderComments(comments)
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            mt: 2,
+            opacity: 0.8,
+            animation: "fadeIn 0.5s ease-in",
+          }}
+        >
+          <InfoIcon color="action" />
+          <Typography variant="body2" color="text.secondary">
+            There are no comments on this post yet.
+          </Typography>
+        </Box>
+      )}
 
       {isAuthenticated && (
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
