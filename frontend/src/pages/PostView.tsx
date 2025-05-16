@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   Container,
   Typography,
@@ -40,7 +40,9 @@ export default function PostView() {
 
   useEffect(() => {
     api.get(`posts/${id}/`).then((res) => setPost(res.data));
-    api.get(`comments/?post=${id}`).then((res) => setComments(res.data.results));
+    api
+      .get(`comments/?post=${id}`)
+      .then((res) => setComments(res.data.results));
   }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -92,8 +94,11 @@ export default function PostView() {
         {post.title}
       </Typography>
       <Typography variant="subtitle1" gutterBottom>
-        By {post.author_username} on{" "}
-        {new Date(post.created_at).toLocaleDateString()}
+        By{" "}
+        <Link to={`/authors/${post.author_username}`}>
+          {post.author_username}
+        </Link>{" "}
+        on {new Date(post.created_at).toLocaleDateString()}
       </Typography>
       <Typography variant="body1" sx={{ whiteSpace: "pre-line", mb: 4 }}>
         {post.content}
