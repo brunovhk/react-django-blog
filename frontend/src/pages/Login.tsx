@@ -1,40 +1,81 @@
 import { useState } from "react";
+import {
+  TextField,
+  Button,
+  Container,
+  Typography,
+  Box,
+  Paper,
+} from "@mui/material";
 import api from "@/api/api";
 import { useAuth } from "@/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [form, setForm] = useState({ username: "", password: "" });
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await api.post("users/token/", { username, password });
+      const res = await api.post("users/token/", form);
       login(res.data.access);
       navigate("/dashboard");
-    } catch (err) {
+    } catch {
       alert("Invalid credentials");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Login</h2>
-      <input
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Username"
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-      <button type="submit">Login</button>
-    </form>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        backgroundColor: "#f5f5f5",
+      }}
+    >
+      <Container maxWidth="xs">
+        <Paper elevation={3} sx={{ p: 4 }}>
+          <Typography variant="h4" align="center" gutterBottom>
+            Login
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Username"
+              name="username"
+              value={form.username}
+              onChange={handleChange}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              type="password"
+              label="Password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+            />
+            <Button
+              fullWidth
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{ mt: 2 }}
+            >
+              Sign In
+            </Button>
+          </Box>
+        </Paper>
+      </Container>
+    </Box>
   );
 }
