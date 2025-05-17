@@ -208,7 +208,7 @@ export default function PostView() {
         </Box>
       )}
 
-      {isAuthenticated && (
+      {isAuthenticated ? (
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <TextField
             label={replyParentId ? "Reply to comment" : "Add a comment"}
@@ -228,6 +228,21 @@ export default function PostView() {
               Submit
             </Button>
           </Box>
+        </Box>
+      ) : (
+        <Box sx={{ mt: 3 }}>
+          <Typography variant="body2" color="text.secondary">
+            You must be logged in to leave a comment.
+          </Typography>
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{ mt: 1 }}
+            component={Link}
+            to="/login"
+          >
+            Login
+          </Button>
         </Box>
       )}
     </Container>
