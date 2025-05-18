@@ -55,6 +55,28 @@ export default function PostView() {
     return `hsl(${hash % 360}, 60%, 60%)`;
   };
 
+  const nestComments = (flatComments: Comment[]): Comment[] => {
+    const commentMap = new Map<number, Comment & { replies: Comment[] }>();
+    const rootComments: Comment[] = [];
+
+    flatComments.forEach((comment) => {
+      commentMap.set(comment.id, { ...comment, replies: [] });
+    });
+
+    commentMap.forEach((comment) => {
+      if (comment.parent) {
+        const parent = commentMap.get(comment.parent);
+        if (parent) {
+          parent.replies.push(comment);
+        }
+      } else {
+        rootComments.push(comment);
+      }
+    });
+
+    return rootComments;
+  };
+
   useEffect(() => {
     const fetchPostAndComments = async () => {
       try {
@@ -63,7 +85,8 @@ export default function PostView() {
           api.get(`comments/?post=${id}`),
         ]);
         setPost(postRes.data);
-        setComments(commentRes.data.results);
+        const flat = commentRes.data.results || commentRes.data;
+        setComments(nestComments(flat));
       } catch (error) {
         showMessage("Failed to load post", "error");
       } finally {
@@ -93,7 +116,8 @@ export default function PostView() {
       setReplyParentId(null);
 
       const res = await api.get(`comments/?post=${id}`);
-      setComments(res.data.results);
+      const flat = res.data.results || res.data;
+      setComments(nestComments(flat));
 
       showMessage(
         "Comment submitted successfully! Awaiting moderation.",
@@ -107,10 +131,20 @@ export default function PostView() {
   const renderComments = (comments: Comment[], level = 0) => (
     <Box sx={{ pl: level * 4, mt: 1 }}>
       {comments.map((c) => (
-        <Card key={c.id} sx={{ mb: 1 }}>
-          <CardContent
-            sx={{ display: "flex", gap: 2, alignItems: "flex-start" }}
-          >
+        <Box
+          key={c.id}
+          sx={{
+            borderLeft: level > 0 ? "2px solid #e0e0e0" : "none",
+            pl: level > 0 ? 2 : 0,
+            ml: level > 0 ? 1 : 0,
+            mt: 1,
+            p: 1.5,
+            bgcolor: "#fff",
+            borderRadius: 1,
+            boxShadow: level === 0 ? 1 : 0,
+          }}
+        >
+          <Box sx={{ display: "flex", gap: 2, alignItems: "flex-start" }}>
             <Avatar sx={{ bgcolor: stringToColor(c.author_username) }}>
               {c.author_username.charAt(0).toUpperCase()}
             </Avatar>
@@ -119,20 +153,23 @@ export default function PostView() {
                 {c.author_username} —{" "}
                 {new Date(c.created_at).toLocaleDateString()}
               </Typography>
-              <Typography variant="body1">{c.content}</Typography>
+              <Typography variant="body1" sx={{ mt: 0.5 }}>
+                {c.content}
+              </Typography>
               {isAuthenticated && (
                 <Button
                   size="small"
                   startIcon={<ReplyIcon />}
                   onClick={() => setReplyParentId(c.id)}
+                  sx={{ mt: 0.5 }}
                 >
                   Reply
                 </Button>
               )}
               {c.replies && renderComments(c.replies, level + 1)}
             </Box>
-          </CardContent>
-        </Card>
+          </Box>
+        </Box>
       ))}
     </Box>
   );
