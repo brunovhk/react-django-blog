@@ -180,7 +180,14 @@ export default function PostView() {
         </Typography>
         <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
           {post.tags.map((tag) => (
-            <Chip key={tag} label={tag} size="small" />
+            <Chip
+              key={tag}
+              label={tag}
+              size="small"
+              sx={{
+                bgcolor: "secondary.main",
+              }}
+            />
           ))}
         </Box>
       </Box>

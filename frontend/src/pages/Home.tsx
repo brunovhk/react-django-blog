@@ -78,16 +78,26 @@ export default function Home() {
           >
             <Card>
               <CardContent>
+                {/* Post Title */}
                 <Typography variant="h6" component="div" gutterBottom>
                   {post.title}
                 </Typography>
+                {/* Post Author */}
                 <Typography variant="body2" color="text.secondary">
                   By {post.author_username} on{" "}
                   {new Date(post.created_at).toLocaleDateString()}
                 </Typography>
+                {/* Post Tags */}
                 <Box sx={{ mt: 1, display: "flex", gap: 1, flexWrap: "wrap" }}>
                   {post.tags.map((tag) => (
-                    <Chip key={tag} label={tag} size="small" />
+                    <Chip
+                      key={tag}
+                      label={tag}
+                      size="small"
+                      sx={{
+                        bgcolor: "secondary.main",
+                      }}
+                    />
                   ))}
                 </Box>
               </CardContent>
