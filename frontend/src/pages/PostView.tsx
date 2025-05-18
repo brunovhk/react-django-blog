@@ -13,6 +13,7 @@ import {
   Avatar,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
+import ReplyIcon from "@mui/icons-material/Reply";
 import api from "@/api/api";
 import { useSnackbar } from "@/components/SnackbarProvider";
 import { useAuth } from "@/auth/AuthContext";
@@ -62,7 +63,7 @@ export default function PostView() {
           api.get(`comments/?post=${id}`),
         ]);
         setPost(postRes.data);
-        setComments(commentRes.data);
+        setComments(commentRes.data.results);
       } catch (error) {
         showMessage("Failed to load post", "error");
       } finally {
@@ -120,7 +121,11 @@ export default function PostView() {
               </Typography>
               <Typography variant="body1">{c.content}</Typography>
               {isAuthenticated && (
-                <Button size="small" onClick={() => setReplyParentId(c.id)}>
+                <Button
+                  size="small"
+                  startIcon={<ReplyIcon />}
+                  onClick={() => setReplyParentId(c.id)}
+                >
                   Reply
                 </Button>
               )}
@@ -151,48 +156,51 @@ export default function PostView() {
     );
 
   return (
-    <Container sx={{ mt: 4 }}>
-      {/* Post Title */}
-      <Typography variant="h4" gutterBottom>
-        {post.title}
-      </Typography>
-      {/* Post Author */}
-      <Typography variant="subtitle1" gutterBottom>
-        By{" "}
-        <Link to={`/authors/${post.author_username}`}>
-          {post.author_username}
-        </Link>{" "}
-        on {new Date(post.created_at).toLocaleDateString()}
-      </Typography>
-      {/* Post content */}
-      <Box sx={{ mb: 4 }}>
-        <Typography
-          variant="body1"
-          component="div"
-          sx={{ whiteSpace: "pre-line" }}
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
-      </Box>
-      {/* Post Tags */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="subtitle2" gutterBottom>
-          Tags:
-        </Typography>
-        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-          {post.tags.map((tag) => (
-            <Chip
-              key={tag}
-              label={tag}
-              size="small"
-              sx={{
-                bgcolor: "secondary.main",
-              }}
-            />
-          ))}
-        </Box>
-      </Box>
+    <Container sx={{ my: 6 }}>
+      <Card sx={{ mb: 4, p: 2 }}>
+        <CardContent>
+          {/* Post Title */}
+          <Typography variant="h4" gutterBottom>
+            {post.title}
+          </Typography>
+          {/* Post Author */}
+          <Typography variant="subtitle1" gutterBottom>
+            By{" "}
+            <Link to={`/authors/${post.author_username}`}>
+              {post.author_username}
+            </Link>{" "}
+            on {new Date(post.created_at).toLocaleDateString()}
+          </Typography>
+          {/* Post content */}
+          <Typography
+            variant="body1"
+            component="div"
+            sx={{ whiteSpace: "pre-line", mt: 2 }}
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+          <Box sx={{ mt: 3 }}>
+            {/* Post tags */}
+            <Typography variant="subtitle2" gutterBottom>
+              Tags:
+            </Typography>
+            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+              {post.tags.map((tag) => (
+                <Chip
+                  key={tag}
+                  label={tag}
+                  size="small"
+                  sx={{
+                    bgcolor: "secondary.main",
+                    fontWeight: 500,
+                  }}
+                />
+              ))}
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
       {/* Post Comments */}
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
         Comments
       </Typography>
       {comments.length > 0 ? (
@@ -219,11 +227,13 @@ export default function PostView() {
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <TextField
             label={replyParentId ? "Reply to comment" : "Add a comment"}
+            variant="outlined"
             fullWidth
             multiline
             rows={4}
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
+            sx={{ bgcolor: "white" }}
           />
           <Box sx={{ mt: 1 }}>
             {replyParentId && (
