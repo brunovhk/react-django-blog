@@ -30,7 +30,12 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
     # Custom action to get posts by the authenticated user
-    @action(detail=False, methods=["get"], permission_classes=[IsAuthenticated])
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path="my-posts",
+        permission_classes=[IsAuthenticated],
+    )
     def my_posts(self, request):
         posts = Post.objects.filter(author=request.user).order_by("-created_at")
         serializer = self.get_serializer(posts, many=True)
