@@ -46,12 +46,31 @@ export default function Register() {
 
   return (
     <Container maxWidth="sm">
-      <Box sx={{ mt: 8 }}>
-        <Card>
+      <Box sx={{ py: 6, px: 2, bgcolor: "background.default" }}>
+        <Card elevation={3} sx={{ p: 4 }}>
           <CardContent>
-            <Typography variant="h4" align="center" gutterBottom>
+            {/* Title */}
+            <Typography
+              variant="h4"
+              gutterBottom
+              align="center"
+              sx={{
+                borderLeft: "4px solid",
+                borderRight: "4px solid",
+                borderColor: "primary.main",
+              }}
+            >
               Create Account
             </Typography>
+            {/* Subtitle */}
+            <Typography
+              variant="subtitle1"
+              align="center"
+              color="text.secondary"
+            >
+              Join the platform and start sharing your thoughts.
+            </Typography>
+            {/* Form */}
             <Box component="form" onSubmit={handleSubmit} noValidate>
               <TextField
                 fullWidth

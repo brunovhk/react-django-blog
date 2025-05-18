@@ -57,14 +57,25 @@ export default function Home() {
   }
 
   return (
-    <Container sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
+    <Container sx={{ my: 4 }}>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{ borderLeft: "4px solid", pl: 2, borderColor: "primary.main" }}
+      >
         Latest Posts
       </Typography>
 
       <Grid container spacing={3}>
         {posts.map((post) => (
-          <Grid size={{ xs: 12, sm: 6, md: 4 }} key={post.id}>
+          <Grid
+            size={{ xs: 12, sm: 6, md: 4 }}
+            key={post.id}
+            sx={{
+              transition: "0.3s",
+              "&:hover": { transform: "translateY(-4px)", boxShadow: 3 },
+            }}
+          >
             <Card>
               <CardContent>
                 <Typography variant="h6" component="div" gutterBottom>
