@@ -1,28 +1,13 @@
 import { useEffect, useState } from "react";
-import {
-  Container,
-  Typography,
-  TextField,
-  Button,
-  Box,
-  Card,
-  Grid,
-  CardActions,
-  CardContent,
-  Autocomplete,
-} from "@mui/material";
-import ReactQuill from "react-quill";
+import { Card, CardContent, Container, Typography } from "@mui/material";
 import api from "@/api/api";
 import { useSnackbar } from "@/components/SnackbarProvider";
-
-// Post interface
-interface Post {
-  id: number;
-  title: string;
-  content: string;
-  created_at: string;
-  tag_names: string[];
-}
+// Components
+import PostForm from "@/components/PostForm";
+import PostList from "@/components/PostList";
+import EditPostDialog from "@/components/EditPostDialog";
+// Types
+import type { Post } from "@/types/Post";
 
 export default function Dashboard() {
   const [form, setForm] = useState({
@@ -31,6 +16,12 @@ export default function Dashboard() {
     tag_names: [] as string[],
   });
   const [myPosts, setMyPosts] = useState<Post[]>([]);
+  const [editPost, setEditPost] = useState<Post | null>(null);
+  const [editForm, setEditForm] = useState({
+    title: "",
+    content: "",
+    tag_names: [] as string[],
+  });
 
   const { showMessage } = useSnackbar();
 
@@ -47,12 +38,6 @@ export default function Dashboard() {
     fetchMyPosts();
   }, []);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -65,6 +50,29 @@ export default function Dashboard() {
     }
   };
 
+  // Handle edit post
+  const handleEdit = (post: Post) => {
+    setEditPost(post);
+    setEditForm({
+      title: post.title,
+      content: post.content,
+      tag_names: post.tag_names || [],
+    });
+  };
+
+  const handleUpdate = async () => {
+    if (!editPost) return;
+    try {
+      await api.patch(`posts/${editPost.id}/`, editForm);
+      showMessage("Post updated successfully!", "success");
+      setEditPost(null);
+      fetchMyPosts();
+    } catch (error) {
+      showMessage("Failed to update post", "error");
+    }
+  };
+
+  // Handle delete post
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure you want to delete this post?")) return;
     try {
@@ -78,85 +86,28 @@ export default function Dashboard() {
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
-      {/* Form to create a new post */}
       <Card sx={{ mb: 4 }}>
         <CardContent>
           <Typography variant="h5" gutterBottom>
             Create New Post
           </Typography>
-          <Box component="form" onSubmit={handleSubmit}>
-            <TextField
-              label="Title"
-              name="title"
-              value={form.title}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <Box sx={{ mt: 2 }}>
-              <ReactQuill
-                theme="snow"
-                value={form.content}
-                onChange={(value) =>
-                  setForm((prev) => ({ ...prev, content: value }))
-                }
-                style={{ height: "200px", marginBottom: "40px" }}
-              />
-            </Box>
-            <Autocomplete
-              multiple
-              freeSolo
-              options={[]}
-              value={form.tag_names}
-              onChange={(_, newValue) => {
-                setForm((prev) => ({ ...prev, tag_names: newValue }));
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Tags"
-                  placeholder="Press Enter to add"
-                  margin="normal"
-                  fullWidth
-                />
-              )}
-            />
-            <Button type="submit" variant="contained" sx={{ mt: 2 }}>
-              Publish
-            </Button>
-          </Box>
+          {/* Form to create a new post */}
+          <PostForm form={form} setForm={setForm} onSubmit={handleSubmit} />
         </CardContent>
       </Card>
-
-      {/* User posts list */}
       <Typography variant="h6" gutterBottom>
         Your Posts
       </Typography>
-      <Grid container spacing={2}>
-        {myPosts.map((post) => (
-          <Grid size={{ xs: 6 }} key={post.id}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">{post.title}</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {new Date(post.created_at).toLocaleDateString()}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                {/* Edit post (WIP) */}
-                {/* <Button size="small" onClick={() => handleEdit(post)}>Edit</Button> */}
-                <Button
-                  size="small"
-                  color="error"
-                  onClick={() => handleDelete(post.id)}
-                >
-                  Delete
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+      {/* User posts list */}
+      <PostList posts={myPosts} onEdit={handleEdit} onDelete={handleDelete} />
+      {/* Edit post dialog */}
+      <EditPostDialog
+        open={!!editPost}
+        onClose={() => setEditPost(null)}
+        form={editForm}
+        setForm={setEditForm}
+        onSubmit={handleUpdate}
+      />
     </Container>
   );
 }
