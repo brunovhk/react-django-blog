@@ -28,5 +28,3 @@ services:
 databases:
   - name: blog-db
     plan: free
-    databaseName: blog-platform
-    user: blog-admin
