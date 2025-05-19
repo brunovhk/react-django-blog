@@ -1,20 +1,21 @@
-export function parseAPIError(errorData: any): string {
-  if (typeof errorData === "string") return errorData;
+export function parseAPIErrorByField(data: any): Record<string, string> {
+  const fieldErrors: Record<string, string> = {};
 
-  if (typeof errorData === "object") {
-    const messages: string[] = [];
+  if (!data || typeof data !== "object") return fieldErrors;
 
-    for (const key in errorData) {
-      const value = errorData[key];
-      if (Array.isArray(value)) {
-        messages.push(...value);
-      } else if (typeof value === "string") {
-        messages.push(value);
+  for (const key in data) {
+    const value = data[key];
+    if (Array.isArray(value)) {
+      fieldErrors[key] = value.join(" ");
+    } else if (typeof value === "object") {
+      // e.g.: {"password": {"password": ["error"]}}
+      for (const innerKey in value) {
+        if (Array.isArray(value[innerKey])) {
+          fieldErrors[innerKey] = value[innerKey].join(" ");
+        }
       }
     }
-
-    return messages.join("\n");
   }
 
-  return "An unexpected error occurred.";
+  return fieldErrors;
 }
