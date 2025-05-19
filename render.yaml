@@ -2,7 +2,7 @@ services:
   - type: web
     name: blog-backend
     runtime: python
-    buildCommand: "../build.sh"
+    buildCommand: "./build.sh"
     startCommand: "gunicorn config.wsgi:application --bind 0.0.0.0:8000"
     rootDir: backend
     plan: free
