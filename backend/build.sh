@@ -2,9 +2,6 @@
 # Exit on error
 set -o errexit
 
-# Navigate to the project directory
-cd backend
-
 # Install dependencies
 pip install -r requirements.txt
 
