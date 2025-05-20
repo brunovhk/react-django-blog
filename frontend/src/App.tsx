@@ -7,6 +7,7 @@ import Home from "@/pages/Home";
 import Dashboard from "@/pages/Dashboard";
 import PostView from "@/pages/PostView";
 import AuthorProfile from "@/pages/AuthorProfile";
+import NotFound from "@/pages/NotFound";
 // Components
 import Navbar from "@/components/Navbar";
 import { SnackbarProvider } from "@/components/SnackbarProvider";
@@ -28,6 +29,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/posts/:id" element={<PostView />} />
                 <Route path="/authors/:username" element={<AuthorProfile />} />
+                <Route path="*" element={<NotFound />} />
                 <Route
                   path="/dashboard"
                   element={
