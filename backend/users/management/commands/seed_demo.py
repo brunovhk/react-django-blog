@@ -33,7 +33,7 @@ class Command(BaseCommand):
 
         self.stdout.write("✅ Seeding posts and comments...")
         for user in users:
-            for _ in range(8):
+            for _ in range(16):
                 post = Post.objects.create(
                     author=user,
                     title=fake.sentence(nb_words=6),
