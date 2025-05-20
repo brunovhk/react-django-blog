@@ -9,6 +9,6 @@ class CommentAdmin(admin.ModelAdmin):
     search_fields = ("author__username", "content")
     actions = ["approve_comments"]
 
-    @admin.action(description="Aprovar comentários selecionados")
+    @admin.action(description="Approve selected comments")
     def approve_comments(self, request, queryset):
         queryset.update(is_approved=True)
