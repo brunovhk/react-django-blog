@@ -1,54 +1,121 @@
-# React + TypeScript + Vite
+# 💻 Frontend - React + Vite + MUI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This folder contains the frontend built with **React 18**, **Vite**, and **Material UI**, consuming the Django REST API and handling authentication, routing, and post display.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ⚙️ Tech Stack
 
-## Expanding the ESLint configuration
+- React 18 (via Vite)
+- TypeScript
+- Material UI (MUI 7)
+- React Router DOM v7
+- Axios for API requests
+- React Quill for rich-text post creation
+- jwt-decode for decoding access tokens
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 📦 Installation
+
+```bash
+cd frontend
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🚀 Development
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm run dev
 ```
+
+This starts the dev server at:
+
+```
+http://localhost:5173/
+```
+
+Make sure your backend is running at:
+
+```
+http://localhost:8000/
+```
+
+---
+
+## 🧪 Available Commands
+
+```bash
+npm run dev       # Start dev server
+npm run build     # Build production-ready bundle
+npm run preview   # Preview built output
+npm run lint      # Run linter
+```
+
+---
+
+## 🔐 Environment Variables
+
+Create a `.env` file based on `.env.example`:
+
+```
+VITE_API_URL=http://localhost:8000/api/
+```
+
+---
+
+## 🌐 Routes Overview
+
+| Path                   | Description                      |
+| ---------------------- | -------------------------------- |
+| `/`                    | Homepage with latest posts       |
+| `/posts/:id`           | View a single post with comments |
+| `/dashboard`           | Create a new post                |
+| `/authors/:username`   | View author profile              |
+| `/login` / `/register` | Auth pages                       |
+
+---
+
+## 📐 Project Structure
+
+```
+frontend/
+├── src/
+│   ├── api/             # Axios instance
+│   ├── assets/          # Static assets (e.g. logo)
+│   ├── auth/            # Auth context and token logic
+│   ├── components/      # Shared UI components
+│   ├── pages/           # Page views
+│   ├── routes/          # App routing definitions
+│   ├── types/           # Shared TypeScript types
+│   ├── utils/           # Utility functions
+│   └── main.tsx         # App entry point
+├── public/
+└── vite.config.ts       # Vite config
+```
+
+---
+
+## 🧪 Features
+
+- Pagination with scroll-to-top
+- Input validation with field-level errors
+- Responsive layout using MUI Grid
+- Error fallback for 404 and no results
+- Token-based login and protected routes
+
+---
+
+## 🌍 Deployment (Vercel)
+
+- Deploy via GitHub integration
+- Only `main` branch is deployed to production
+- Set `VITE_API_URL` in Vercel dashboard
+
+---
+
+## 📄 License
+
+See root [`README.md`](../README.md)
