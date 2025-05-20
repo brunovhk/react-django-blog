@@ -10,19 +10,13 @@ This folder contains the backend API built with **Django 5.2.1** and **Django RE
 - CRUD for posts with rich-text and tag support
 - Nested comment system with moderation (`is_approved`)
 - Author profile with total posts and approved comments
-- OpenAPI (Swagger) auto-generated docs via `drf-yasg`
+- OpenAPI (Swagger,Redoc) auto-generated docs via `drf-yasg`
 - Seeder script using `Faker` for demo data
 - Docker-ready setup for local or production deploys
 
 ---
 
 ## 📦 Requirements
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
 
 Key dependencies:
 
@@ -35,10 +29,13 @@ Key dependencies:
 
 ---
 
-## ⚙️ Local Setup
+## 📦 Installation
 
 ```bash
 cd backend
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 cp .env.example .env
 python manage.py migrate
 python manage.py createsuperuser
@@ -48,13 +45,17 @@ python manage.py runserver
 Access admin panel:
 
 ```
+
 http://localhost:8000/admin/
+
 ```
 
 Access Swagger docs:
 
 ```
+
 http://localhost:8000/swagger/
+
 ```
 
 ---
@@ -71,7 +72,7 @@ This creates:
 
 - 3 demo users (`demo_user1`, `demo_user2`, ...)
 - 48 posts with random tags
-- Nested, approved comments
+- Nested approved comments
 
 ---
 
@@ -87,7 +88,7 @@ This creates:
 | GET      | `/api/users/author/{username}/` | Public author stats            |
 | GET/POST | `/api/comments/`                | Create + list comments by post |
 
-> More routes are available in Swagger: `/swagger`
+> Full route docs available at `/swagger` and `/redoc`.
 
 ## 📚 API Documentation
 

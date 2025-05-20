@@ -1,6 +1,6 @@
 # 📝 Blog Platform with Authentication and Comments
 
-This project simulates a functional blog platform with user authentication, CRUD for posts, nested comments, tags, and author posts.
+This project simulates a functional blog platform with user authentication, CRUD for posts, nested comments, tags, and author profiles.
 It is built with **Django + DRF** for the backend and **React + Vite + Material UI** for the frontend.
 
 > Some advanced protections such as CAPTCHA, email verification, or automatic moderation were intentionally omitted to keep the focus on architecture, code clarity, and modularity.
@@ -45,7 +45,7 @@ It is built with **Django + DRF** for the backend and **React + Vite + Material 
 react-django-blog/
 ├── backend/         # Django + DRF
 ├── frontend/        # React + Vite + MUI
-├── docs/            # Optional for future extension
+├── docs/            # Screenshots and documentation (optional)
 └── README.md        # This file
 ```
 
@@ -54,7 +54,8 @@ react-django-blog/
 ## 🔗 Live Demo
 
 - 🌐 Frontend: [https://blog-platform.brunovhk.dev](https://blog-platform.brunovhk.dev)
-- 🔧 Backend API Swagger: [Swagger API URL](https://blog-backend-8qq0.onrender.com/swagger)
+- 🔧 Backend API Swagger: [`/swagger`](https://blog-backend-8qq0.onrender.com/swagger)
+- 📘 Backend Redoc: [`/redoc`](https://blog-backend-8qq0.onrender.com/redoc)
 
 > To test locally or seed demo data, see each directory's README for full setup instructions.
 
@@ -63,23 +64,32 @@ react-django-blog/
 ## 🧪 Features Overview
 
 - ✅ Public posts listing with pagination and tags
-- ✅ Post detail with nested comments
+- ✅ Post detail with nested, moderated comments
 - ✅ User registration/login via JWT
-- ✅ Authenticated users can create, edit and delete their own posts
+- ✅ Dashboard for authenticated users to create/manage their own posts
 - ✅ Author profile with stats and list of their posts
 - ✅ Seeder for demo content with users, posts, comments, tags
 - ✅ Fully responsive layout (MUI Grid)
 - ✅ Error handling and validation feedback
 - ✅ Scroll to top on pagination change
+- ✅ 404 fallback and empty state handling
 
 ---
 
-## 📁 More Info
+## 🖼️ Screenshots
+
+| Home (Post Grid)                         | Post Detail + Comments                   | Dashboard (Post Editor)                            |
+| ---------------------------------------- | ---------------------------------------- | -------------------------------------------------- |
+| ![Home](docs/assets/screenshot-home.png) | ![Post](docs/assets/screenshot-post.png) | ![Dashboard](docs/assets/screenshot-dashboard.png) |
+
+---
+
+## 📁 Additional Documentation
 
 See:
 
-- [`backend/README.md`](./backend/README.md) → Django setup, API routes, seeding
-- [`frontend/README.md`](./frontend/README.md) → Vite config, routing, state & build
+- [`backend/README.md`](./backend/README.md) → Django setup, API docs, seeding, deploy
+- [`frontend/README.md`](./frontend/README.md) → Vite config, structure, routing, envs & build
 
 ---
 

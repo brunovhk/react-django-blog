@@ -75,6 +75,7 @@ VITE_API_URL=http://localhost:8000/api/
 | `/dashboard`           | Create a new post                |
 | `/authors/:username`   | View author profile              |
 | `/login` / `/register` | Auth pages                       |
+| `*`                    | Fallback for invalid URLs (404)  |
 
 ---
 
@@ -105,6 +106,7 @@ frontend/
 - Responsive layout using MUI Grid
 - Error fallback for 404 and no results
 - Token-based login and protected routes
+- NotFound fallback and empty result handling
 
 ---
 
