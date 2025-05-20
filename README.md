@@ -1,12 +1,88 @@
-# Blog Platform with Authentication and Comments
+# 📝 Blog Platform with Authentication and Comments
 
-A full-featured blog platform with user authentication, rich-text post editor, nested comments, author statistics, and moderation.
+This project simulates a functional blog platform with user authentication, CRUD for posts, nested comments, tags, and author posts.
+It is built with **Django + DRF** for the backend and **React + Vite + Material UI** for the frontend.
 
-## Technologies
-- Backend: Django + DRF
-- Frontend: React (TypeScript) + Vite
-- DevOps: Docker, CI/CD (GitHub Actions), Deployment via Render/Railway
+> Some advanced protections such as CAPTCHA, email verification, or automatic moderation were intentionally omitted to keep the focus on architecture, code clarity, and modularity.
 
-## Getting Started
+---
 
-To be filled in later...
+## 🔧 Tech Stack
+
+### Backend
+
+- Python 3.12
+- Django 5.2.1
+- Django REST Framework 3.16.0
+- Simple JWT (authentication)
+- PostgreSQL (via Docker)
+- Faker (for demo data)
+- drf-yasg (OpenAPI/Swagger docs)
+- CORS headers, decouple, dotenv
+- Uvicorn + Gunicorn for ASGI/WGI compatibility
+
+### Frontend
+
+- React 18 (via Vite)
+- TypeScript 5.8+
+- Material UI (MUI 7.1+)
+- React Router v7
+- Axios
+- React Quill (rich text)
+- jwt-decode
+
+### DevOps
+
+- Docker + Docker Compose
+- Render (API hosting)
+- Vercel (Frontend hosting)
+
+---
+
+## 🧱 Project Structure
+
+```
+react-django-blog/
+├── backend/         # Django + DRF
+├── frontend/        # React + Vite + MUI
+├── docs/            # Optional for future extension
+└── README.md        # This file
+```
+
+---
+
+## 🔗 Live Demo
+
+- 🌐 Frontend: [https://blog-platform.brunovhk.dev](https://blog-platform.brunovhk.dev)
+- 🔧 Backend API Swagger: [Swagger API URL](https://blog-backend-8qq0.onrender.com/swagger)
+
+> To test locally or seed demo data, see each directory's README for full setup instructions.
+
+---
+
+## 🧪 Features Overview
+
+- ✅ Public posts listing with pagination and tags
+- ✅ Post detail with nested comments
+- ✅ User registration/login via JWT
+- ✅ Authenticated users can create, edit and delete their own posts
+- ✅ Author profile with stats and list of their posts
+- ✅ Seeder for demo content with users, posts, comments, tags
+- ✅ Fully responsive layout (MUI Grid)
+- ✅ Error handling and validation feedback
+- ✅ Scroll to top on pagination change
+
+---
+
+## 📁 More Info
+
+See:
+
+- [`backend/README.md`](./backend/README.md) → Django setup, API routes, seeding
+- [`frontend/README.md`](./frontend/README.md) → Vite config, routing, state & build
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
