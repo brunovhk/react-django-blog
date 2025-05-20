@@ -1,71 +1,121 @@
-# Frontend - Blog Platform (React + TypeScript)
+# 💻 Frontend - React + Vite + MUI
 
-This is the frontend of the Blog Platform, built with **React**, **TypeScript**, and **Vite**. It consumes the API provided by the Django + DRF backend and provides a complete blog interface with authentication, post creation, nested comments, and user profile management.
-
----
-
-## 🚀 Tech Stack
-
-- ⚛️ React 18+
-- 🔐 TypeScript
-- ⚡ Vite
-- 📡 Axios (API requests)
-- 🌐 React Router DOM (routing)
-- 🎨 Tailwind CSS (styling)
-- 🧪 Jest + React Testing Library (tests)
+This folder contains the frontend built with **React 18**, **Vite**, and **Material UI**, consuming the Django REST API and handling authentication, routing, and post display.
 
 ---
 
-## 🛠️ Project Setup
+## ⚙️ Tech Stack
+
+- React 18 (via Vite)
+- TypeScript
+- Material UI (MUI 7)
+- React Router DOM v7
+- Axios for API requests
+- React Quill for rich-text post creation
+- jwt-decode for decoding access tokens
+
+---
+
+## 📦 Installation
 
 ```bash
-# Navigate to the frontend folder
 cd frontend
-
-# Install dependencies
 npm install
+```
 
-# Start development server
+---
+
+## 🚀 Development
+
+```bash
 npm run dev
 ```
-The app will be available at http://localhost:5173
 
-## 📁 Folder Structure
+This starts the dev server at:
+
+```
+http://localhost:5173/
+```
+
+Make sure your backend is running at:
+
+```
+http://localhost:8000/
+```
+
+---
+
+## 🧪 Available Commands
+
 ```bash
+npm run dev       # Start dev server
+npm run build     # Build production-ready bundle
+npm run preview   # Preview built output
+npm run lint      # Run linter
+```
+
+---
+
+## 🔐 Environment Variables
+
+Create a `.env` file based on `.env.example`:
+
+```
+VITE_API_URL=http://localhost:8000/api/
+```
+
+---
+
+## 🌐 Routes Overview
+
+| Path                   | Description                      |
+| ---------------------- | -------------------------------- |
+| `/`                    | Homepage with latest posts       |
+| `/posts/:id`           | View a single post with comments |
+| `/dashboard`           | Create a new post                |
+| `/authors/:username`   | View author profile              |
+| `/login` / `/register` | Auth pages                       |
+
+---
+
+## 📐 Project Structure
+
+```
 frontend/
-├── public/             # Static assets
 ├── src/
-│   ├── assets/         # Images, fonts, etc.
-│   ├── components/     # Reusable UI components
-│   ├── pages/          # Page views (Home, Login, Register, etc.)
-│   ├── services/       # API integration (e.g., axios config)
-│   ├── hooks/          # Custom React hooks
-│   ├── types/          # TypeScript interfaces/types
-│   ├── App.tsx         # Main app component
-│   └── main.tsx        # Entry point
-├── index.html
-└── vite.config.ts      # Vite config
+│   ├── api/             # Axios instance
+│   ├── assets/          # Static assets (e.g. logo)
+│   ├── auth/            # Auth context and token logic
+│   ├── components/      # Shared UI components
+│   ├── pages/           # Page views
+│   ├── routes/          # App routing definitions
+│   ├── types/           # Shared TypeScript types
+│   ├── utils/           # Utility functions
+│   └── main.tsx         # App entry point
+├── public/
+└── vite.config.ts       # Vite config
 ```
-## 🔒 Environment Variables
-Create a .env file in the root of frontend/ and define:
-```env
-VITE_API_BASE_URL=http://localhost:8000/api
-```
-## 🧪 Running Tests
-```bash
-npm run test
-```
-## ✅ Todo
-- ☐ Authentication flow (login, register, JWT)
-- ☐ Post CRUD
-- ☐ Nested comment system
-- ☐ Author profile with stats
-- ☐ Responsive UI
 
-## 📦 Build
-```bash
-npm run build
-```
+---
+
+## 🧪 Features
+
+- Pagination with scroll-to-top
+- Input validation with field-level errors
+- Responsive layout using MUI Grid
+- Error fallback for 404 and no results
+- Token-based login and protected routes
+
+---
+
+## 🌍 Deployment (Vercel)
+
+- Deploy via GitHub integration
+- Only `main` branch is deployed to production
+- Set `VITE_API_URL` in Vercel dashboard
+
+---
 
 ## 📄 License
-This project is licensed under the MIT License.
+
+See root [`README.md`](../README.md)
