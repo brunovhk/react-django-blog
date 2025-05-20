@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Container,
   Typography,
@@ -10,6 +10,7 @@ import {
   Box,
   Chip,
   CircularProgress,
+  Pagination,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import api from "@/api/api";
@@ -26,16 +27,26 @@ interface Post {
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const { showMessage } = useSnackbar();
 
-  useEffect(() => {
+  const fetchPosts = (page = 1) => {
     api
-      .get("posts/")
-      .then((res) => setPosts(res.data.results || res.data))
+      .get(`posts/?page=${page}`)
+      .then((res) => {
+        setPosts(res.data.results || res.data);
+        setTotalPages(Math.ceil(res.data.count / 12));
+      })
       .catch(() => showMessage("Failed to load posts", "error"))
       .finally(() => setLoading(false));
-  }, []);
+  };
+
+  useEffect(() => {
+    fetchPosts(page);
+  }, [page]);
 
   if (loading || !posts) {
     return (
@@ -57,7 +68,7 @@ export default function Home() {
   }
 
   return (
-    <Container sx={{ my: 4 }}>
+    <Container ref={containerRef} sx={{ my: 4 }}>
       <Typography
         variant="h4"
         gutterBottom
@@ -72,12 +83,16 @@ export default function Home() {
             size={{ xs: 12, sm: 6, md: 4 }}
             key={post.id}
             sx={{
+              display: "flex",
+              width: "100%",
               transition: "0.3s",
               "&:hover": { transform: "translateY(-4px)", boxShadow: 3 },
             }}
           >
-            <Card>
-              <CardContent>
+            <Card
+              sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}
+            >
+              <CardContent sx={{ flexGrow: 1 }}>
                 {/* Post Title */}
                 <Typography variant="h6" component="div" gutterBottom>
                   {post.title}
@@ -110,6 +125,31 @@ export default function Home() {
           </Grid>
         ))}
       </Grid>
+      {/* No posts found */}
+      {!loading && posts.length === 0 && (
+        <Typography
+          variant="body1"
+          color="text.secondary"
+          align="center"
+          sx={{ mt: 4 }}
+        >
+          No posts found.
+        </Typography>
+      )}
+      {/* Pagination */}
+      {posts.length > 0 && (
+        <Box mt={4} display="flex" justifyContent="center">
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={(_, value) => {
+              setPage(value);
+              containerRef.current?.scrollIntoView({ behavior: "smooth" });
+            }}
+            color="primary"
+          />
+        </Box>
+      )}
     </Container>
   );
 }
