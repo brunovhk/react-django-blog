@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import api from "@/api/api";
 
 interface AuthContextType {
   user: any;
@@ -25,16 +26,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const validateToken = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/users/me/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-        if (!response.ok) throw new Error("Invalid token");
+        const response = await api.get("users/me");
 
-        const userData = await response.json();
-        setUser(userData);
+        if (!response || response.status != 200)
+          throw new Error("Invalid token");
+
+        login(token);
       } catch (err) {
         localStorage.removeItem("access_token");
         setUser(null);
