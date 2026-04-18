@@ -3,7 +3,7 @@ services:
     name: blog-backend
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+    startCommand: "gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 4"
     rootDir: backend
     plan: free
     autoDeploy: true
@@ -12,17 +12,11 @@ services:
         generateValue: true
       - key: DEBUG
         value: false
+      - key: DATABASE_URL
+        sync: false # Set manually from Supabase connection string
       - key: CSRF_TRUSTED_ORIGINS
-        value: null # Define on Render Panel (e.g.: https://backend.onrender.com)
+        sync: false # e.g.: https://blog-backend.onrender.com
       - key: CORS_ALLOWED_ORIGINS
-        value: null # Define on Render Panel (e.g.: https://frontend.vercel.app)
+        sync: false # e.g.: https://your-frontend.vercel.app
       - key: WEB_CONCURRENCY
         value: 4
-      - key: DATABASE_URL
-        fromDatabase:
-          name: blog-db
-          property: connectionString
-
-databases:
-  - name: blog-db
-    plan: free

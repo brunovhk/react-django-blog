@@ -106,7 +106,7 @@ DATABASES = {
     "default": dj_database_url.config(
         default="postgresql://postgres:postgres@localhost:5432/blog",
         conn_max_age=600,
-        # ssl_require=True
+        ssl_require=not DEBUG,
     )
 }
 
