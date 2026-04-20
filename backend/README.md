@@ -59,16 +59,13 @@ python manage.py runserver
 
 Access admin panel:
 
-```
-
+```text
 http://localhost:8000/admin/
-
 ```
 
 Access Swagger docs:
 
-```
-
+```text
 http://localhost:8000/swagger/
 
 ```
@@ -144,13 +141,29 @@ docker-compose up --build
 
 `.env.example`
 
+**Local development:**
+
+```env
+SECRET_KEY=your_secret_here
+DEBUG=True
+DATABASE_URL=postgres://postgres:postgres@db:5432/blog
+ALLOWED_HOSTS=localhost,127.0.0.1
+CSRF_TRUSTED_ORIGINS=http://localhost:8000
+CORS_ALLOWED_ORIGINS=http://localhost:5173
 ```
+
+**Production:**
+
+```env
 SECRET_KEY=your_secret_here
 DEBUG=False
 DATABASE_URL=postgres://postgres:postgres@db:5432/blog
-CSRF_TRUSTED_ORIGINS=http://localhost:8000
-CORS_ALLOWED_ORIGINS=http://localhost:8000,http://localhost:5173
+ALLOWED_HOSTS=your-domain.com
+CSRF_TRUSTED_ORIGINS=https://your-domain.com
+CORS_ALLOWED_ORIGINS=https://your-domain.com
 ```
+
+> `ALLOWED_HOSTS` accepts a comma-separated list of domains. Set it to your hosting provider's domain — no code changes needed when switching providers.
 
 ---
 
